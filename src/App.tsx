@@ -1,12 +1,17 @@
-import { ArrowRight, Calendar, MapPin, Settings2, UserRoundPlus } from "lucide-react"
+import { ArrowRight, Calendar, MapPin, Settings2, UserRoundPlus, X } from "lucide-react"
 import { useState } from "react"
 
 function App() {
 
   const [isGuestInputOpen, setIsGestsInputOpen] = useState(false)
+  const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
 
   function openGuestsInput() {
     setIsGestsInputOpen(true)
+  }
+
+  function closeGuestsInput() {
+    setIsGestsInputOpen(false)
   }
 
   return (
@@ -21,32 +26,37 @@ function App() {
 
             <div className="flex items-center gap-2 flex-1">
               <MapPin size={20} className="text-zinc-400" />
-              <input placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
+              <input disabled={isGuestInputOpen} placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
             </div>
 
             <div className="flex items-center gap-2">
               <Calendar size={20} className="text-zinc-400" />
-              <input placeholder="Quando?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
+              <input disabled={isGuestInputOpen} placeholder="Quando?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
             </div>
 
             <div className="w-px h-6 bg-zinc-800" />
-            {isGuestInputOpen ? (<button onClick={openGuestsInput} className="bg-zinc-800 text-zinc-200 rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-zinc-700">
-              Alterar local/data
-              <Settings2 size={20} />
-            </button>) : (<button onClick={openGuestsInput} className="bg-lime-300 text-lime-950  rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-lime-400">
-              Continuar
-              <ArrowRight size={20} />
-            </button>)}
+            {isGuestInputOpen ? (
+              <button onClick={closeGuestsInput} className="bg-zinc-800 text-zinc-200 rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-zinc-700">
+                Alterar local/data
+                <Settings2 size={20} />
+              </button>
+            ) : (
+              <button onClick={openGuestsInput} className="bg-lime-300 text-lime-950  rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-lime-400">
+                Continuar
+                <ArrowRight size={20} />
+              </button>
+            )}
 
           </div>
 
           {isGuestInputOpen && (
             <div className="h-16 bg-zinc-900 p-4 rounded-xl flex items-center shadow-2xl gap-3">
 
-              <div className="flex items-center gap-2 flex-1">
+              <button type="button" onClick={() => setIsGuestsModalOpen(true)} className="flex items-center gap-2 flex-1">
                 <UserRoundPlus size={20} className="text-zinc-400" />
-                <input placeholder="Quem estará na viagem?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
-              </div>
+                <span className="text-zinc-400 text-lg flex-1 text-left">Quem estará na viagem?</span>
+
+              </button>
 
 
               <div className="w-px h-6 bg-zinc-800" />
@@ -66,6 +76,56 @@ function App() {
         <p className="text-sm text-zinc-500">Ao planejar sua viagem pela plann.er você automaticamente concorda <br />
           com nossos <a href="#" className=" text-zinc-300 underline">termos de uso</a> e <a href="#" className=" text-zinc-300 underline">políticas de privacidade</a> .</p>
       </div>
+
+      {isGuestsModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-zinc-900 p-6 rounded-xl  w-[640px]">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-zinc-300">Selecionar convidados</h2>
+              <button onClick={() => setIsGuestsModalOpen(false)} className="text-zinc-300">
+                <X size={20} />
+              </button>
+            </div>
+            <p className="text-sm text-zinc-400 mt-2">Os convidados irão receber e-mails para confiurmar a participação na viagem.</p>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
+                <span className="text-zinc-300">teste.teste@gmail.com</span>
+                <button type="button" className="text-zinc-300">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
+                <span className="text-zinc-300">teste.teste@gmail.com</span>
+                <button type="button" className="text-zinc-300">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
+                <span className="text-zinc-300">teste.teste@gmail.com</span>
+                <button type="button" className="text-zinc-300">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
+                <span className="text-zinc-300">teste.teste@gmail.com</span>
+                <button type="button" className="text-zinc-300">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
+                <span className="text-zinc-300">teste.teste@gmail.com</span>
+                <button type="button" className="text-zinc-300">
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      )}
+
+
     </div>
 
   )
