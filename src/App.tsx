@@ -1,10 +1,11 @@
-import { ArrowRight, Calendar, MapPin, Settings2, UserRoundPlus, X } from "lucide-react"
-import { useState } from "react"
+import { ArrowRight, AtSign, Calendar, MapPin, Plus, Settings2, UserRoundPlus, X } from "lucide-react"
+import { FormEvent, useState } from "react"
 
 function App() {
 
   const [isGuestInputOpen, setIsGestsInputOpen] = useState(false)
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>(['ramon@teste.com'])
 
   function openGuestsInput() {
     setIsGestsInputOpen(true)
@@ -13,6 +14,25 @@ function App() {
   function closeGuestsInput() {
     setIsGestsInputOpen(false)
   }
+
+  function addEmailToInvite(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const data = new FormData(event.currentTarget)
+    const email = data.get('email')
+
+    if (!email) return
+
+    const isEmailExists = emailsToInvite.some(item => item === email)
+
+    if (isEmailExists) return alert('Email já adicionado')
+
+    setEmailsToInvite([...emailsToInvite, email as string])
+
+    event.currentTarget.reset()
+  }
+
+
 
   return (
     <div className="h-screen flex items-center justify-center bg-pattern bg-no-repeat bg-center">
@@ -71,10 +91,9 @@ function App() {
 
         </div>
 
-
-
         <p className="text-sm text-zinc-500">Ao planejar sua viagem pela plann.er você automaticamente concorda <br />
-          com nossos <a href="#" className=" text-zinc-300 underline">termos de uso</a> e <a href="#" className=" text-zinc-300 underline">políticas de privacidade</a> .</p>
+          com nossos <a href="#" className=" text-zinc-300 underline">termos de uso</a> e <a href="#" className=" text-zinc-300 underline">políticas de privacidade</a> .
+        </p>
       </div>
 
       {isGuestsModalOpen && (
@@ -89,37 +108,32 @@ function App() {
             <p className="text-sm text-zinc-400 mt-2">Os convidados irão receber e-mails para confiurmar a participação na viagem.</p>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
-                <span className="text-zinc-300">teste.teste@gmail.com</span>
-                <button type="button" className="text-zinc-300">
-                  <X size={16} />
-                </button>
-              </div>
-              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
-                <span className="text-zinc-300">teste.teste@gmail.com</span>
-                <button type="button" className="text-zinc-300">
-                  <X size={16} />
-                </button>
-              </div>
-              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
-                <span className="text-zinc-300">teste.teste@gmail.com</span>
-                <button type="button" className="text-zinc-300">
-                  <X size={16} />
-                </button>
-              </div>
-              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
-                <span className="text-zinc-300">teste.teste@gmail.com</span>
-                <button type="button" className="text-zinc-300">
-                  <X size={16} />
-                </button>
-              </div>
-              <div className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
-                <span className="text-zinc-300">teste.teste@gmail.com</span>
-                <button type="button" className="text-zinc-300">
-                  <X size={16} />
-                </button>
-              </div>
+              {emailsToInvite.map((email, index) => {
+                return (
+                  <div key={index} className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
+                    <span className="text-zinc-300">{email}</span>
+                    <button type="button" className="text-zinc-300">
+                      <X size={16} />
+                    </button>
+                  </div>
+                )
+              })}
+
             </div>
+            <div className="w-full h-px bg-zinc-800 my-3"></div>
+            <form onSubmit={addEmailToInvite} className="flex flex-wrap gap-2 flex items-center">
+              <AtSign size={20} className="text-zinc-400 size-5" />
+              <input
+                placeholder="Digite o e-mail do convidado"
+                type="email"
+                name="email"
+                className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+              />
+              <button type="submit" onClick={openGuestsInput} className="bg-lime-300 text-lime-950  rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-lime-400">
+                Convidar
+                <Plus size={20} />
+              </button>
+            </form>
           </div>
         </div>
 
