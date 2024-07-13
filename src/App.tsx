@@ -1,11 +1,12 @@
-import { ArrowRight, AtSign, Calendar, MapPin, Plus, Settings2, UserRoundPlus, X } from "lucide-react"
+import { ArrowRight, AtSign, Calendar, MapPin, Plus, Settings2, User, UserRoundPlus, X } from "lucide-react"
 import { FormEvent, useState } from "react"
 
 function App() {
 
   const [isGuestInputOpen, setIsGestsInputOpen] = useState(false)
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
-  const [emailsToInvite, setEmailsToInvite] = useState<string[]>(['ramon@teste.com'])
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
+  const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false)
 
   function openGuestsInput() {
     setIsGestsInputOpen(true)
@@ -32,7 +33,9 @@ function App() {
     event.currentTarget.reset()
   }
 
-
+  function removeEmailToInvite(email: string) {
+    setEmailsToInvite(emailsToInvite.filter(item => item !== email))
+  }
 
   return (
     <div className="h-screen flex items-center justify-center bg-pattern bg-no-repeat bg-center">
@@ -81,7 +84,7 @@ function App() {
 
               <div className="w-px h-6 bg-zinc-800" />
 
-              <button className="bg-lime-300 text-lime-950  rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-lime-400">
+              <button onClick={() => { setIsConfirmTripModalOpen(true) }} className="bg-lime-300 text-lime-950  rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-lime-400">
                 Confirmar Viagem
                 <ArrowRight size={20} />
               </button>
@@ -112,7 +115,7 @@ function App() {
                 return (
                   <div key={index} className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
                     <span className="text-zinc-300">{email}</span>
-                    <button type="button" className="text-zinc-300">
+                    <button type="button" onClick={() => removeEmailToInvite(email)} className="text-zinc-300">
                       <X size={16} />
                     </button>
                   </div>
@@ -121,7 +124,7 @@ function App() {
 
             </div>
             <div className="w-full h-px bg-zinc-800 my-3"></div>
-            <form onSubmit={addEmailToInvite} className="flex flex-wrap gap-2 flex items-center">
+            <form onSubmit={addEmailToInvite} className="flex flex-wrap gap-2 items-center p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg">
               <AtSign size={20} className="text-zinc-400 size-5" />
               <input
                 placeholder="Digite o e-mail do convidado"
@@ -139,9 +142,51 @@ function App() {
 
       )}
 
+      {isConfirmTripModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-zinc-900 p-6 rounded-xl  w-[640px]">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-zinc-300">Confirmar criação de viagem</h2>
+              <button onClick={() => setIsConfirmTripModalOpen(false)} className="text-zinc-300">
+                <X size={20} />
+              </button>
+            </div>
+            <p className="text-sm text-zinc-400 mt-2">
+              Para concluir a criação da viagem para <b>Florianópolis</b>, Brasil nas datas de <b>16 a 27 de Agosto de 2024</b> seus dados abaix:
+            </p>
+
+
+            <form onSubmit={addEmailToInvite} className="space-y-3 mt-5">
+              <div className="flex flex-wrap gap-2 items-center p-2.5 px-4 bg-zinc-950 border border-zinc-800 rounded-lg">
+                <User size={20} className="text-zinc-400 size-5" />
+                <input
+                  placeholder="Seu nome completo"
+                  name="name"
+                  className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+                />
+              </div>
+              <div className="flex flex-wrap gap-2 items-center p-2.5 px-4 bg-zinc-950 border border-zinc-800 rounded-lg">
+                <User size={20} className="text-zinc-400 size-5" />
+                <input
+                  placeholder="Seu nome completo"
+                  type="email"
+                  name="personal_email"
+                  className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+                />
+              </div>
+
+              <button type="submit" onClick={openGuestsInput} className="bg-lime-300 text-lime-950  rounded-lg h-11 px-5 w-full justify-center font-medium flex items-center gap-2 hover:bg-lime-400">
+                Convidar
+                <Plus size={20} />
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+
 
     </div>
-
   )
 }
 
