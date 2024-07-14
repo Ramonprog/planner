@@ -3,11 +3,10 @@ import { FormEvent } from "react";
 
 interface ConfirmTripModalProps {
   setIsConfirmTripModalOpen: (value: boolean) => void,
-  addEmailToInvite: (event: FormEvent<HTMLFormElement>) => void,
-  createTrip: () => void
+  createTrip: (event: FormEvent<HTMLFormElement>) => void
 }
 
-export function ConfirmTripModal({ setIsConfirmTripModalOpen, addEmailToInvite, createTrip }: ConfirmTripModalProps) {
+export function ConfirmTripModal({ setIsConfirmTripModalOpen, createTrip }: ConfirmTripModalProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-zinc-900 p-6 rounded-xl  w-[40rem]">
@@ -22,7 +21,7 @@ export function ConfirmTripModal({ setIsConfirmTripModalOpen, addEmailToInvite, 
         </p>
 
 
-        <form onSubmit={addEmailToInvite} className="space-y-3 mt-5">
+        <form onSubmit={createTrip} className="space-y-3 mt-5">
           <div className="flex flex-wrap gap-2 items-center p-2.5 px-4 bg-zinc-950 border border-zinc-800 rounded-lg">
             <User size={20} className="text-zinc-400 size-5" />
             <input
@@ -41,7 +40,7 @@ export function ConfirmTripModal({ setIsConfirmTripModalOpen, addEmailToInvite, 
             />
           </div>
 
-          <button type="submit" onClick={createTrip} className="bg-lime-300 text-lime-950  rounded-lg h-11 px-5 w-full justify-center font-medium flex items-center gap-2 hover:bg-lime-400">
+          <button type="submit" className="bg-lime-300 text-lime-950  rounded-lg h-11 px-5 w-full justify-center font-medium flex items-center gap-2 hover:bg-lime-400">
             Confirmar criação de viagem
           </button>
         </form>

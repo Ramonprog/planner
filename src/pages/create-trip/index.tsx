@@ -1,8 +1,10 @@
-import { ArrowRight, Calendar, MapPin, Settings2, UserRoundPlus } from "lucide-react"
+
 import { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { InviteGuestsModal } from "./components/invite-gests-modal"
 import { ConfirmTripModal } from "./components/confirm-trip-modal"
+import { DestinationAndDateStep } from "./components/destination-and-date-step"
+import { InviteGuestsStep } from "./components/invite-guests-step"
 
 export function CreateTripPage() {
   const navigate = useNavigate()
@@ -40,7 +42,8 @@ export function CreateTripPage() {
     setEmailsToInvite(emailsToInvite.filter(item => item !== email))
   }
 
-  function createTrip() {
+  function createTrip(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     navigate('/trips/1')
   }
 
@@ -52,54 +55,11 @@ export function CreateTripPage() {
           <p className="text-zinc-300 text-lg">Convide seus amigos e planeje sua próxima viagem!</p>
         </div>
         <div className="space-y-4">
-          <div className="h-16 bg-zinc-900 p-4 rounded-xl flex items-center shadow-2xl gap-3">
-
-            <div className="flex items-center gap-2 flex-1">
-              <MapPin size={20} className="text-zinc-400" />
-              <input disabled={isGuestInputOpen} placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Calendar size={20} className="text-zinc-400" />
-              <input disabled={isGuestInputOpen} placeholder="Quando?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
-            </div>
-
-            <div className="w-px h-6 bg-zinc-800" />
-            {isGuestInputOpen ? (
-              <button onClick={closeGuestsInput} className="bg-zinc-800 text-zinc-200 rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-zinc-700">
-                Alterar local/data
-                <Settings2 size={20} />
-              </button>
-            ) : (
-              <button onClick={openGuestsInput} className="bg-lime-300 text-lime-950  rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-lime-400">
-                Continuar
-                <ArrowRight size={20} />
-              </button>
-            )}
-
-          </div>
+          <DestinationAndDateStep closeGuestsInput={closeGuestsInput} isGuestInputOpen={isGuestInputOpen} openGuestsInput={openGuestsInput} />
 
           {isGuestInputOpen && (
-            <div className="h-16 bg-zinc-900 p-4 rounded-xl flex items-center shadow-2xl gap-3">
-
-              <button type="button" onClick={() => setIsGuestsModalOpen(true)} className="flex items-center gap-2 flex-1">
-                <UserRoundPlus size={20} className="text-zinc-400" />
-                {emailsToInvite.length > 0 ? (
-                  <span className="text-zinc-100 text-lg flex-1 text-left">{emailsToInvite.length} pessoa(s) convidada(as)</span>
-                ) : (<span className="text-zinc-400 text-lg flex-1 text-left">Quem estará na viagem?</span>)}
-
-              </button>
-
-
-              <div className="w-px h-6 bg-zinc-800" />
-
-              <button onClick={() => { setIsConfirmTripModalOpen(true) }} className="bg-lime-300 text-lime-950  rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-lime-400">
-                Confirmar Viagem
-                <ArrowRight size={20} />
-              </button>
-            </div>
-          )
-          }
+            <InviteGuestsStep emailsToInvite={emailsToInvite} setIsConfirmTripModalOpen={setIsConfirmTripModalOpen} setIsGuestsModalOpen={setIsGuestsModalOpen} />
+          )}
 
         </div>
 
@@ -113,7 +73,7 @@ export function CreateTripPage() {
       )}
 
       {isConfirmTripModalOpen && (
-        <ConfirmTripModal addEmailToInvite={addEmailToInvite} createTrip={createTrip} setIsConfirmTripModalOpen={setIsConfirmTripModalOpen} />
+        <ConfirmTripModal createTrip={createTrip} setIsConfirmTripModalOpen={setIsConfirmTripModalOpen} />
       )}
     </div>
   )
