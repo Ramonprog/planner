@@ -1,4 +1,4 @@
-import { Calendar, CircleCheck, MapPin, Plus, Settings2 } from "lucide-react";
+import { Calendar, CircleCheck, CircleDashed, Link2, MapPin, Plus, Settings2, UserCog } from "lucide-react";
 
 export function TripDetailsPage() {
   return (
@@ -65,7 +65,69 @@ export function TripDetailsPage() {
             </div>
           </div>
         </div>
-        <div className="w-80"></div>
+        <div className="w-80 space-y-6">
+          <div className="space-y-6">
+            <h2 className="font-semibold text-xl">Links importante</h2>
+            <div className="space-y-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <span className="font-medium block text-zinc-100">Reserva do AirBnB</span>
+                  <a href="#" className="font-medium block text-zinc-500 truncate hover:text-zinc-200">www.google.com.br22442424242323222222</a>
+                </div>
+                <Link2 className="text-zinc-400 size-5 flex-shrink-0" />
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <span className="font-medium block text-zinc-100">Regras da casa</span>
+                  <a href="#" className="font-medium block text-zinc-500 truncate hover:text-zinc-200">www.google.com.br22442424242323222222</a>
+                </div>
+                <Link2 className="text-zinc-400 size-5 flex-shrink-0" />
+              </div>
+            </div>
+            <button className="bg-zinc-800 w-full justify-center text-zinc-200 rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-zinc-700">
+              Cadastrar novo link
+              <Plus size={20} />
+            </button>
+          </div>
+
+          <div className="w-full h-px bg-zinc-800"></div>
+
+          <div className="space-y-6">
+            <h2 className="font-semibold text-xl">Convidados</h2>
+            <div className="space-y-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <span className="font-medium block text-zinc-100">Jessca Whte</span>
+                  <span className="font-medium block text-zinc-500 truncate ">
+                    jesscaWhte@gmal.com
+                  </span>
+                </div>
+                <CircleDashed className="text-zinc-400 size-5 flex-shrink-0" />
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <span className="font-medium block text-zinc-100">Ronaldo Vasconcelos</span>
+                  <span className="font-medium block text-zinc-500 truncate ">vasconcelosRonalo@gmail.com</span>
+                </div>
+                <CircleDashed className="text-zinc-400 size-5 flex-shrink-0" />
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <span className="font-medium block text-zinc-100">Claudo Marques</span>
+                  <span className="font-medium block text-zinc-500 truncate ">marquesClaudio@gmail.com</span>
+                </div>
+                <CircleDashed className="text-zinc-400 size-5 flex-shrink-0" />
+              </div>
+            </div>
+            <button className="bg-zinc-800 w-full justify-center text-zinc-200 rounded-lg py-2 px-5 font-medium flex items-center gap-2 hover:bg-zinc-700">
+              Gerencar convidados
+              <UserCog size={20} />
+            </button>
+          </div>
+        </div>
       </main>
     </div>
   )
