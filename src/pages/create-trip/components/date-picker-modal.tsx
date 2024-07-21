@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { DateRange, DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css"
+import { ptBR } from "date-fns/locale";
 
 interface DatePickerModalProps {
   setIsDatePickerOpen: (prop: boolean) => void
@@ -24,6 +25,7 @@ export function DatePickerModal({ setIsDatePickerOpen, eventStartAndAndEndDates,
           mode="range"
           selected={eventStartAndAndEndDates}
           onSelect={setEventStartAndEndDates}
+          locale={ptBR}
           classNames={{
             selected: `bg-lime-300 text-lime-600`,
             chevron: `fill-lime-300`,
