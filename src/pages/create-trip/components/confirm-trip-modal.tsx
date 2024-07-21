@@ -1,5 +1,6 @@
 import { User, X } from "lucide-react";
 import { FormEvent } from "react";
+import { useCreateTripContext } from "../../../context/CreateTripContext";
 
 interface ConfirmTripModalProps {
   setIsConfirmTripModalOpen: (value: boolean) => void,
@@ -7,6 +8,9 @@ interface ConfirmTripModalProps {
 }
 
 export function ConfirmTripModal({ setIsConfirmTripModalOpen, createTrip }: ConfirmTripModalProps) {
+
+  const { setOwnerData, ownerData } = useCreateTripContext()
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-zinc-900 p-6 rounded-xl  w-[40rem]">
@@ -27,6 +31,8 @@ export function ConfirmTripModal({ setIsConfirmTripModalOpen, createTrip }: Conf
             <input
               placeholder="Seu nome completo"
               name="name"
+              value={ownerData.ownerName || ''}
+              onChange={(event) => setOwnerData({ ownerName: event.target.value })}
               className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
             />
           </div>
@@ -35,6 +41,8 @@ export function ConfirmTripModal({ setIsConfirmTripModalOpen, createTrip }: Conf
             <input
               placeholder="Seu nome completo"
               type="email"
+              value={ownerData.ownerEmail || ''}
+              onChange={(event) => setOwnerData({ ownerEmail: event.target.value })}
               name="personal_email"
               className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
             />

@@ -1,15 +1,16 @@
 import { X } from "lucide-react";
-import { DateRange, DayPicker } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css"
 import { ptBR } from "date-fns/locale";
+import { useCreateTripContext } from "../../../context/CreateTripContext";
 
 interface DatePickerModalProps {
   setIsDatePickerOpen: (prop: boolean) => void
-  eventStartAndAndEndDates: undefined | DateRange
-  setEventStartAndEndDates: (event: undefined | DateRange) => void
 }
 
-export function DatePickerModal({ setIsDatePickerOpen, eventStartAndAndEndDates, setEventStartAndEndDates }: DatePickerModalProps) {
+export function DatePickerModal({ setIsDatePickerOpen }: DatePickerModalProps) {
+  const { date, setDate } = useCreateTripContext()
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-zinc-900 p-6 rounded-xl">
@@ -23,16 +24,18 @@ export function DatePickerModal({ setIsDatePickerOpen, eventStartAndAndEndDates,
 
         <DayPicker
           mode="range"
-          selected={eventStartAndAndEndDates}
-          onSelect={setEventStartAndEndDates}
+          selected={date}
+          onSelect={setDate}
           locale={ptBR}
+
           classNames={{
             selected: `bg-lime-300 text-lime-600`,
             chevron: `fill-lime-300`,
             range_middle: `bg-lime-300`,
             range_end: `bg-lime-300 rounded-r-full`,
             range_start: `bg-lime-300 rounded-l-full`,
-            today: `border-1 text-lime-300 border-indigo-800`
+            today: `border-1 text-lime-300 border-indigo-800`,
+            day: ``
           }} />
       </div>
     </div>

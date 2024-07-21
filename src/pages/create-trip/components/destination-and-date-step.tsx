@@ -2,8 +2,8 @@ import { ArrowRight, Calendar, MapPin, Settings2 } from "lucide-react";
 import { Button } from "../../../components/button";
 import { useState } from "react";
 import { DatePickerModal } from "./date-picker-modal";
-import { DateRange } from "react-day-picker";
 import { format } from "date-fns/format";
+import { useCreateTripContext } from "../../../context/CreateTripContext";
 
 interface DestinationAndDateStepProps {
   isGuestInputOpen: boolean;
@@ -14,16 +14,15 @@ interface DestinationAndDateStepProps {
 
 export function DestinationAndDateStep({ closeGuestsInput, isGuestInputOpen, openGuestsInput }: DestinationAndDateStepProps) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
-  const [eventStartAndAndEndDates, setEventStartAndEndDates] = useState<DateRange | undefined>(undefined)
-
-  const displayedDate = eventStartAndAndEndDates && eventStartAndAndEndDates.from && eventStartAndAndEndDates.to ? format(eventStartAndAndEndDates.from, "d 'de' LLL").concat(' até ').concat(format(eventStartAndAndEndDates.to, "d 'de' LLL")) : null
-
+  const { date } = useCreateTripContext()
+  const displayedDate = date && date.from && date.to ? format(date.from, "d 'de' LLL").concat(' até ').concat(format(date.to, "d 'de' LLL")) : null
+  const { setDestination } = useCreateTripContext()
   return (
     <div className="h-16 bg-zinc-900 p-4 rounded-xl flex items-center shadow-2xl gap-3">
 
       <div className="flex items-center gap-2 flex-1">
         <MapPin size={20} className="text-zinc-400" />
-        <input disabled={isGuestInputOpen} placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
+        <input disabled={isGuestInputOpen} onChange={(event) => setDestination(event.target.value)} placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
       </div>
 
       <button onClick={() => setIsDatePickerOpen(true)} disabled={isGuestInputOpen} className="flex items-center gap-2 ">
@@ -33,7 +32,7 @@ export function DestinationAndDateStep({ closeGuestsInput, isGuestInputOpen, ope
         </span>
       </button>
 
-      {isDatePickerOpen && (<DatePickerModal setIsDatePickerOpen={setIsDatePickerOpen} eventStartAndAndEndDates={eventStartAndAndEndDates} setEventStartAndEndDates={setEventStartAndEndDates} />)}
+      {isDatePickerOpen && (<DatePickerModal setIsDatePickerOpen={setIsDatePickerOpen} />)}
 
       <div className="w-px h-6 bg-zinc-800" />
       {isGuestInputOpen ? (

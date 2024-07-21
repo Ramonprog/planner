@@ -1,10 +1,9 @@
 import { useContext, useState, createContext, ReactNode } from "react";
+import { DateRange } from "react-day-picker";
 
 interface OwnerData {
   ownerName: string;
   ownerEmail: string;
-  ownerEventDateTo: string;
-  ownerEventDateFrom: string;
 }
 
 interface CreateTripContextProps {
@@ -12,6 +11,8 @@ interface CreateTripContextProps {
   setDestination: (prop: string) => void;
   ownerData: OwnerData;
   setOwnerData: (data: Partial<OwnerData>) => void;
+  date: DateRange | undefined,
+  setDate: (prop: DateRange | undefined) => void;
 }
 
 //Partial<OwnerData>: O tipo Partial é uma utilidade do TypeScript que transforma todas 
@@ -26,16 +27,17 @@ export function CreateTripContextProvider({ children }: { children: ReactNode })
   const [ownerData, setOwnerDataState] = useState<OwnerData>({
     ownerName: '',
     ownerEmail: '',
-    ownerEventDateTo: '',
-    ownerEventDateFrom: ''
   });
+
+  const [date, setDate] = useState<DateRange | undefined>(undefined)
 
   const setOwnerData = (data: Partial<OwnerData>) => {
     setOwnerDataState((prev) => ({ ...prev, ...data }));
   };
 
+
   return (
-    <CreateTripContext.Provider value={{ destination, setDestination, ownerData, setOwnerData }}>
+    <CreateTripContext.Provider value={{ destination, setDestination, ownerData, setOwnerData, date, setDate }}>
       {children}
     </CreateTripContext.Provider>
   );
