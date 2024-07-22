@@ -13,7 +13,7 @@ import { useTripDataContext } from "../../context/TripDataContext";
 export function TripDetailsPage() {
   const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] = useState(false);
   const { tripId } = useParams()
-  const { setTripData } = useTripDataContext()
+  const { setTripData, setTripParticipants } = useTripDataContext()
 
   function handleOpenCreateActivityModal() {
     setIsCreateActivityModalOpen(true);
@@ -32,8 +32,18 @@ export function TripDetailsPage() {
 
     }
   }
+  async function getParticipants() {
+    try {
+      const { data } = await api.get(`/trips/${tripId}/participants`)
+      setTripParticipants(data.participants)
+    } catch (error) {
+      console.log("🚀 ~ getTripId ~ error:", error)
+
+    }
+  }
 
   useEffect(() => {
+    getParticipants()
     getTripId()
   }, { tripId })
 
