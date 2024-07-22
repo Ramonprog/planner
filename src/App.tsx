@@ -5,6 +5,7 @@ import {
 import { CreateTripPage } from "./pages/create-trip";
 import { TripDetailsPage } from "./pages/trip-details";
 import { CreateTripContextProvider } from "./context/CreateTripContext";
+import { TripDataPropvider } from "./context/TripDataContext";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <CreateTripContextProvider>
-      <RouterProvider router={router} />
+      <TripDataPropvider>
+        <RouterProvider router={router} />
+      </TripDataPropvider>
     </CreateTripContextProvider>
   )
 }

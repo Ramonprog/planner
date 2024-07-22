@@ -1,13 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateActivityModal } from "./components/create-activity-modal";
 import { ImportantLinks } from "./components/important-links";
 import { Guests } from "./components/gests";
 import { DestinationAndDateHeader } from "./components/destination-and-date-header";
 import { Activitys } from "./components/activitys";
+import { useParams } from "react-router-dom";
+import { api } from "../../lib/axios";
+import { useTripDataContext } from "../../context/TripDataContext";
 
 export function TripDetailsPage() {
   const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] = useState(false);
+  const { tripId } = useParams()
+  const { setTripData } = useTripDataContext()
 
   function handleOpenCreateActivityModal() {
     setIsCreateActivityModalOpen(true);
@@ -16,6 +22,20 @@ export function TripDetailsPage() {
   function handleCloseCreateActivityModal() {
     setIsCreateActivityModalOpen(false);
   }
+
+  async function getTripId() {
+    try {
+      const { data } = await api.get(`/trips/${tripId}`)
+      setTripData(data.trip)
+    } catch (error) {
+      console.log("🚀 ~ getTripId ~ error:", error)
+
+    }
+  }
+
+  useEffect(() => {
+    getTripId()
+  }, { tripId })
 
   return (
     <div className="max-w-6xl px-6 py-10 mx-auto space-y-8">
