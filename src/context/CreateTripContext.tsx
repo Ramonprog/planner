@@ -35,7 +35,6 @@ export function CreateTripContextProvider({ children }: { children: ReactNode })
     setOwnerDataState((prev) => ({ ...prev, ...data }));
   };
 
-
   return (
     <CreateTripContext.Provider value={{ destination, setDestination, ownerData, setOwnerData, date, setDate }}>
       {children}

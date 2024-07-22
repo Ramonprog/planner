@@ -5,6 +5,8 @@ import { InviteGuestsModal } from "./components/invite-gests-modal"
 import { ConfirmTripModal } from "./components/confirm-trip-modal"
 import { DestinationAndDateStep } from "./components/destination-and-date-step"
 import { InviteGuestsStep } from "./components/invite-guests-step"
+import { useCreateTripContext } from "../../context/CreateTripContext"
+import { api } from "../../lib/axios"
 
 export function CreateTripPage() {
   const navigate = useNavigate()
@@ -12,6 +14,7 @@ export function CreateTripPage() {
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false)
+  const { date, destination, ownerData } = useCreateTripContext()
 
   function openGuestsInput() {
     setIsGestsInputOpen(true)
@@ -42,9 +45,26 @@ export function CreateTripPage() {
     setEmailsToInvite(emailsToInvite.filter(item => item !== email))
   }
 
-  function createTrip(event: FormEvent<HTMLFormElement>) {
+  async function createTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    navigate('/trips/1')
+
+    if (!destination || !date?.from || !date.to || emailsToInvite.length === 0 || !ownerData.ownerName || !ownerData.ownerEmail) return alert('Preencha todos os dados')
+
+    try {
+      const { data } = await api.post('/trips', {
+        destination,
+        starts_at: date?.from,
+        ends_at: date?.to,
+        emails_to_invite: emailsToInvite,
+        owner_name: ownerData.ownerName,
+        owner_email: ownerData.ownerEmail
+      })
+
+      navigate(`/trips/${data?.tripId}`)
+    } catch (error) {
+      console.log("🚀 ~ createTrip ~ error:", error)
+
+    }
   }
 
   return (
